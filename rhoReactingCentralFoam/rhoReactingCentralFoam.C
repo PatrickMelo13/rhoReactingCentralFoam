@@ -130,7 +130,9 @@ int main(int argc, char *argv[])
         surfaceScalarField p_neg("p_neg", rho_neg*rPsi_neg);
 
         surfaceScalarField phiv_pos("phiv_pos", U_pos & mesh.Sf());
+        phiv_pos.setOriented(false); // velocity flux is unoriented (sign set by flow, not mesh convention)
         surfaceScalarField phiv_neg("phiv_neg", U_neg & mesh.Sf());
+        phiv_neg.setOriented(false);
 
         // Make fluxes relative to mesh-motion
         if (mesh.moving())
@@ -182,12 +184,12 @@ int main(int argc, char *argv[])
         Info<< "Time = " << runTime.timeName() << nl << endl;
 
         phi = aphiv_pos*rho_pos + aphiv_neg*rho_neg;
+        phi.setOriented(true); // net mass flux: sign follows mesh face orientation (owner->neighbour)
 
-        surfaceVectorField phiUp
-        (
-            (aphiv_pos*rhoU_pos + aphiv_neg*rhoU_neg)
-          + (a_pos*p_pos + a_neg*p_neg)*mesh.Sf()
-        );
+        surfaceVectorField phiU(aphiv_pos*rhoU_pos + aphiv_neg*rhoU_neg);
+        // Momentum flux must be oriented (uses mesh.Sf() face normals below)
+        phiU.setOriented(true);
+        surfaceVectorField phiUp(phiU + (a_pos*p_pos + a_neg*p_neg)*mesh.Sf());
 
         surfaceScalarField phiEp
         (

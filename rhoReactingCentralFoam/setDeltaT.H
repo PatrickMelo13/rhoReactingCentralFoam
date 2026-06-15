@@ -28,7 +28,7 @@ Description
 if (adjustTimeStep && useAcousticCo)
 {
     scalar maxDeltaTFact =
-        min(maxCo/(CoNum + small), maxAcousticCo/(acousticCoNum + small));
+        min(maxCo/(CoNum + SMALL), maxAcousticCo/(acousticCoNum + SMALL));
 
     scalar deltaTFact = min(min(maxDeltaTFact, 1.0 + 0.1*maxDeltaTFact), 1.2);
 
@@ -45,7 +45,7 @@ if (adjustTimeStep && useAcousticCo)
 }
 else if (adjustTimeStep)
 {
-    scalar maxDeltaTFact = maxCo/(CoNum + small);
+    scalar maxDeltaTFact = maxCo/(CoNum + SMALL);
     scalar deltaTFact = min(min(maxDeltaTFact, 1.0 + 0.1*maxDeltaTFact), 1.2);
 
     runTime.setDeltaT
