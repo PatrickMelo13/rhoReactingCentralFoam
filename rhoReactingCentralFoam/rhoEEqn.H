@@ -29,9 +29,12 @@ if (!inviscid)
         fvm::ddt(rho, e) - fvc::ddt(rho, e)
       - fvm::laplacian(turbulence->alphaEff(), e)
     );
+
+    fvOptions.constrain(eEqn);
     eEqn.solve("e");
 
     thermo.correct();
+    fvOptions.correct(e);
     rhoE = rho*(e + 0.5*magSqr(U));
 }
 

@@ -24,6 +24,7 @@ EXE_LIBS = \
     -lrhoCentralFoam \
     -lturbulenceModels \
     -lcompressibleTurbulenceModels \
+    -lthermoTools \
     -lmeshTools \
     -lfvOptions \
     -lchemistryModel \
